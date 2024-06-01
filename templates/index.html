@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Twitter Trends</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Twitter Trends</h1>
+    <p id="loading">loading</p>
+    <div id="results"></div>
+    <button id="run-script">Click here to run the script</button>
+
+    <script>
+        $('#loading').hide()
+        $('#run-script').click(function () {
+            $('#loading').show()
+            $.get('/run-script', function (data) {
+                var resultHtml = `
+                    <p>These are the most happening topics as on ${new Date(data[0].datetime).toLocaleString()}:</p>
+                    <ul>
+                        <li>${data[0].trend1}</li>
+                        <li>${data[0].trend2}</li>
+                        <li>${data[0].trend3}</li>
+                        <li>${data[0].trend4}</li>
+                        <li>${data[0].trend5}</li>
+                    </ul>
+                    <p>The IP address used for this query was ${data[0].ip_address}.</p>
+                    <p>Here's a JSON extract of this record from the MongoDB:</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                $('#loading').show()
+                $('#results').html(resultHtml);
+            });
+        });
+    </script>
+</body>
+
+</html>
