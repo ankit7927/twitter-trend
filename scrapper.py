@@ -52,8 +52,8 @@ def scrapper(username_inp, password_inp):
     driver.quit()
     return trending_topics
 
-def insert_into_db(trending_topics:list):
-    client = pymongo.MongoClient("mongodb://localhost:27017/")
+def insert_into_db(trending_topics:list, db_string):
+    client = pymongo.MongoClient(db_string)#"mongodb://localhost:27017/")
     db = client["x_trends"]
     collection = db["trends"]
 
@@ -72,9 +72,10 @@ def insert_into_db(trending_topics:list):
 
 if __name__ == "__main__":
     credentials = []
-    with open("credentials.json","r") as file:
-        credentials = json.loads(s=file.read())
+    with open("enviroment.json","r") as file:
+        enviroment = json.loads(s=file.read())
 
-    cred = random.choice(credentials)
+    cred = random.choice(enviroment["credentials"])
+
     trending_topics = scrapper(username_inp=cred["username"], password_inp=cred["password"])
-    insert_into_db(trending_topics=trending_topics)
+    insert_into_db(trending_topics=trending_topics, db_string=enviroment["db_string"])
