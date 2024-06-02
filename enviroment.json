@@ -1,9 +1,9 @@
 {
-    "db_string": "mongodb://localhost:27017/",
+    "db_string": "mongodb+srv://code7lancer:73QbIRyMO3yhYYqK@cluster0.vedcysk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     "credentials": [
         {
-            "username": "testuser",
-            "password": "testpass"
+            "username": "dheeraj374765",
+            "password": "testpass0987"
         }
     ]
 }
