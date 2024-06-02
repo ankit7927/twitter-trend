@@ -76,8 +76,5 @@ if __name__ == "__main__":
         credentials = json.loads(s=file.read())
 
     cred = random.choice(credentials)
-    username= cred["username"]
-    password= cred["password"]
-    trending_topics = scrapper(username_inp=str(username), password_inp=str(password))
-
+    trending_topics = scrapper(username_inp=cred["username"], password_inp=cred["password"])
     insert_into_db(trending_topics=trending_topics)
