@@ -34,6 +34,7 @@
                     <pre>${JSON.stringify(data, null, 2)}</pre>
                 `;
                 $('#run-script').prop("disabled", false)
+                $('#run-script').html("Click here to run the script")
                 $('#results').html(resultHtml);
             });
         });

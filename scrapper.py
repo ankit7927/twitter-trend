@@ -15,7 +15,7 @@ def scrapper(username_inp, password_inp):
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-gpu")
     # chrome_options.add_argument('--proxy-server=213.19.123.178:229')
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 

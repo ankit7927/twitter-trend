@@ -23,4 +23,12 @@ pip install -r requirements.txt
 ```
 python main.py
 ```
+<br/>
+<h3>optional</h3> 
+<p>if you want to see browser then comment or remove  <b>line 18</b> in <a href="">scrapper.py</a> file.
+</p>
+
+```
+# chrome_options.add_argument("--headless")
+```
 
