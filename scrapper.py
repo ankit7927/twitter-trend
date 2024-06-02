@@ -41,11 +41,11 @@ def scrapper(username_inp, password_inp):
 
     wait.until(EC.presence_of_element_located((By.XPATH, "//a[@aria-label='Home']")))
 
-    trending_section = wait.until(EC.presence_of_element_located((By.XPATH, "//section[@aria-labelledby='accessible-list-1']")))
+    trending_section = wait.until(EC.presence_of_element_located((By.XPATH, f"//div[@aria-label='Timeline: Trending now']")))
 
-    trending_items = trending_section.find_elements(By.XPATH, ".//div[@data-testid='trend']")[:5]
+    trending_items = trending_section.find_elements(By.XPATH, ".//div[@class='css-175oi2r r-1adg3ll r-1ny4l3l']")
 
-    for item in trending_items:
+    for item in trending_items[-6:-1]:
         topic = item.text.split('\n')[1]
         trending_topics.append(topic.replace("#", ""))
 

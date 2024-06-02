@@ -9,29 +9,31 @@
 
 <body>
     <h1>Twitter Trends</h1>
-    <p id="loading">loading</p>
-    <div id="results"></div>
     <button id="run-script">Click here to run the script</button>
+    <div id="results"></div>
+    
 
     <script>
         $('#loading').hide()
         $('#run-script').click(function () {
-            $('#loading').show()
+            $('#run-script').html("scrapping data")
+            $('#run-script').prop("disabled", true)
             $.get('/run-script', function (data) {
+                var resultTopic = data.at(-1)
                 var resultHtml = `
-                    <p>These are the most happening topics as on ${new Date(data[0].datetime).toLocaleString()}:</p>
+                    <p>These are the most happening topics as on ${new Date(resultTopic.datetime).toLocaleString()}:</p>
                     <ul>
-                        <li>${data[0].trend1}</li>
-                        <li>${data[0].trend2}</li>
-                        <li>${data[0].trend3}</li>
-                        <li>${data[0].trend4}</li>
-                        <li>${data[0].trend5}</li>
+                        <li>${resultTopic.trend1}</li>
+                        <li>${resultTopic.trend2}</li>
+                        <li>${resultTopic.trend3}</li>
+                        <li>${resultTopic.trend4}</li>
+                        <li>${resultTopic.trend5}</li>
                     </ul>
-                    <p>The IP address used for this query was ${data[0].ip_address}.</p>
+                    <p>The IP address used for this query was ${resultTopic.ip_address}.</p>
                     <p>Here's a JSON extract of this record from the MongoDB:</p>
                     <pre>${JSON.stringify(data, null, 2)}</pre>
                 `;
-                $('#loading').show()
+                $('#run-script').prop("disabled", false)
                 $('#results').html(resultHtml);
             });
         });
