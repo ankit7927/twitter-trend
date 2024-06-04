@@ -21,13 +21,19 @@ def scrapper(username_inp, password_inp, proxy):
     }
 
     chrome_options = Options()
+    chrome_options.set_capability("proxy", proxy_set)
+
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--headless")
 
-    chrome_options.set_capability("proxy", proxy_set)
+    # for linux server
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    # linux chrome service
+    service = Service('/usr/local/bin/chromedriver')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     driver.get('https://twitter.com/i/flow/login')
 
