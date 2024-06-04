@@ -1,10 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.common.proxy import ProxyType
 import pymongo, uuid, socket
 from datetime import datetime
 import os
@@ -12,28 +12,25 @@ import os
 def scrapper(username_inp, password_inp, proxy):
     trending_topics = []
 
-    proxy_set = {
-        "httpProxy": proxy,
-        "ftpProxy": proxy,
-        "sslProxy": proxy,
-        "noProxy": None,
-        "proxyType": "manual"
+    firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX.copy()
+    firefox_capabilities['platform'] = "WINDOWS"
+    firefox_capabilities['version'] = "10"
+    firefox_capabilities["proxy"] = {
+        'proxyType': ProxyType.MANUAL,
+        'httpProxy': proxy,
+        'ftpProxy': proxy,
+        'sslProxy': proxy,
+        'noProxy': None
     }
 
-    chrome_options = Options()
-    chrome_options.set_capability("proxy", proxy_set)
-
-    chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--headless")
-
-    # for linux server
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
+    fopt = webdriver.FirefoxOptions()
+    fopt.set_capability = firefox_capabilities
+    fopt.add_argument("--disable-extensions")
+    fopt.add_argument("--disable-gpu")
 
     # linux chrome service
-    service = Service('/usr/local/bin/chromedriver')
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    service = Service('/usr/local/bin/geckodriver')
+    driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=fopt)
 
     driver.get('https://twitter.com/i/flow/login')
 
