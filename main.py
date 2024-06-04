@@ -1,12 +1,9 @@
 from flask import Flask, render_template, jsonify
-import subprocess, pymongo, json
+import subprocess, pymongo, os
 
 app = Flask(__name__)
 
-with open("enviroment.json","r") as file:
-    enviroment = json.loads(s=file.read())
-
-client = pymongo.MongoClient(enviroment["db_string"])
+client = pymongo.MongoClient(os.getenv("DB_URL"))
 db = client["x_trends"]
 collection = db["trends"]
 

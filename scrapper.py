@@ -5,17 +5,27 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-import pymongo, uuid, socket, json, random
+import pymongo, uuid, socket
 from datetime import datetime
+import os
 
-def scrapper(username_inp, password_inp):
+def scrapper(username_inp, password_inp, proxy):
     trending_topics = []
+
+    proxy_set = {
+        "httpProxy": proxy,
+        "ftpProxy": proxy,
+        "sslProxy": proxy,
+        "noProxy": None,
+        "proxyType": "manual"
+    }
 
     chrome_options = Options()
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-gpu")
-    # chrome_options.add_argument('--proxy-server=213.19.123.178:229')
     chrome_options.add_argument("--headless")
+
+    chrome_options.set_capability("proxy", proxy_set)
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
@@ -53,7 +63,7 @@ def scrapper(username_inp, password_inp):
     return trending_topics
 
 def insert_into_db(trending_topics:list, db_string):
-    client = pymongo.MongoClient(db_string)#"mongodb://localhost:27017/")
+    client = pymongo.MongoClient(db_string)
     db = client["x_trends"]
     collection = db["trends"]
 
@@ -71,11 +81,13 @@ def insert_into_db(trending_topics:list, db_string):
     collection.insert_one(data)
 
 if __name__ == "__main__":
-    credentials = []
-    with open("enviroment.json","r") as file:
-        enviroment = json.loads(s=file.read())
+    DB_URL = os.getenv("DB_URL")
+    PROXY_URL = os.getenv("PROXY_URL")
+    X_UNAME = os.getenv("X_UNAME")
+    X_PWORD = os.getenv("X_PWORD")
 
-    cred = random.choice(enviroment["credentials"])
+    if DB_URL == "" or PROXY_URL == "" or X_PWORD == "" or X_UNAME == "":
+        raise Exception("data not provided")
 
-    trending_topics = scrapper(username_inp=cred["username"], password_inp=cred["password"])
-    insert_into_db(trending_topics=trending_topics, db_string=enviroment["db_string"])
+    trending_topics = scrapper(username_inp=X_UNAME, password_inp=X_PWORD, proxy=PROXY_URL)
+    insert_into_db(trending_topics=trending_topics, db_string=DB_URL)
