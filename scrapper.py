@@ -23,7 +23,7 @@ def scrapper(username_inp, password_inp, proxy):
     chrome_options = Options()
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
 
     chrome_options.set_capability("proxy", proxy_set)
 
@@ -51,7 +51,7 @@ def scrapper(username_inp, password_inp, proxy):
 
     wait.until(EC.presence_of_element_located((By.XPATH, "//a[@aria-label='Home']")))
 
-    trending_section = wait.until(EC.presence_of_element_located((By.XPATH, f"//div[@aria-label='Timeline: Trending now']")))
+    trending_section = wait.until(EC.presence_of_element_located((By.XPATH, f"//div[@aria-label='Timeline: Trending now' and @class='css-175oi2r']")))
 
     trending_items = trending_section.find_elements(By.XPATH, ".//div[@class='css-175oi2r r-1adg3ll r-1ny4l3l']")
 
