@@ -27,10 +27,11 @@ def scrapper(username_inp, password_inp, proxy):
     firefox_options.set_capability = firefox_capabilities
     firefox_options.add_argument("--disable-extensions")
     firefox_options.add_argument("--disable-gpu")
+    firefox_options.add_argument("--headless")
 
     # linux chrome service
     service = Service('/usr/local/bin/geckodriver')
-    driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=firefox_options)
+    driver = webdriver.Firefox(service=service, options=firefox_options)
 
     driver.get('https://twitter.com/i/flow/login')
 
