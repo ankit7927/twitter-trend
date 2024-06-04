@@ -26,6 +26,8 @@ def scrapper(username_inp, password_inp, proxy):
     # chrome_options.add_argument("--headless")
 
     chrome_options.set_capability("proxy", proxy_set)
+    chrome_options.set_capability("platform", "windows")
+    chrome_options.set_capability("version", "10")
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
